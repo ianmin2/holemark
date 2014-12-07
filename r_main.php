@@ -15,8 +15,8 @@
 date_default_timezone_set("Africa/Nairobi");
 $this_site = "eleanor/BitsaQuiz";
 
-$db = 'quiz'; $host = 'localhost'; $user = 'root'; 
-$pass = ''; //YOUR_DATABASE_PASSWORD_GOES_HERE
+$db = 'quiz'; $host = 'localhost'; $user = 'holemark'; 
+$pass = 'holemark'; //YOUR_DATABASE_PASSWORD_GOES_HERE
 
 /*
 	* m4Labs FrameworkEnd of database connection variable declaration*/
