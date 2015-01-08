@@ -56,7 +56,12 @@ class connection{
 		if(@$stops){
 			
 			$respArray = $this->makeResponse( "ERROR", "CRITICAL ERROR: ".mysqli_error($this->con), "");
-			echo  $this->jsoncallback."(".json_encode($respArray).")";
+			if( $this->jsoncallback != "" ){
+				echo  $this->jsoncallback."(".json_encode($respArray).")";
+			}else{
+				echo json_encode($respArray);
+			}
+			echo 
 			exit;
 			
 		}else{
@@ -130,9 +135,7 @@ class connection{
 			$elements[] = $element;
 		}
 		
-		$respArray = $this->makeResponse( "SUCCESS", $elements , "");
-		echo  $this->jsoncallback."(".json_encode($respArray).")";
-		exit;		
+		return $elements;
 		
 	}
 	

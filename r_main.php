@@ -11,11 +11,12 @@
 
 /*
 	* m4Labs Framework Database connection variables ... and more! */
-
+header("X-Powered-By: ieGlobal");
+@session_start();
 date_default_timezone_set("Africa/Nairobi");
 $this_site = "eleanor/BitsaQuiz";
 
-$db = 'quiz'; $host = 'localhost'; $user = 'holemark'; 
+$db = 'holemark'; $host = 'localhost'; $user = 'holemark'; 
 $pass = 'holemark'; //YOUR_DATABASE_PASSWORD_GOES_HERE
 
 /*
@@ -26,7 +27,7 @@ if(@$id != ''){
 
 // WARNING ONLY ADD PAGES THAT ARE FULLY CLASSES OR PURELY FUNCTIONS TO THIS ARRAY Else Face the wrath of a broken connection 
 	$ids = array('',
-				 'r_mailer.php',		//Framework Mailing	Component
+				 'mailer.php',		//Framework Mailing	Component
 				 'r_obsfucate.php',		//Framework Obsfucation Component
 				 'r_connection.php', 	//Framework Database Manipulation Component
 				 'r_minify.php',		//Framework File Minifying component

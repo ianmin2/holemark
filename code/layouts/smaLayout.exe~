@@ -1,0 +1,7 @@
+<h1 class="darker btn btn-lg"> USER PANEL Not yet ready </h1>
+<script>
+
+	console.log('loaded from remote script');
+
+</script>
+

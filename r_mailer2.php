@@ -18,7 +18,7 @@
 
 			}else{
 
-				echo $jsoncallback."(".json_encode(array( "response" => "ERROR", "data" => array( "message" => "NOT ALL REQUIRED PARAMETERS HAVE BEEN MET!", "command" => ""))).")";
+				return $jsoncallback."(".json_encode(array( "response" => "ERROR", "data" => array( "message" => "NOT ALL REQUIRED PARAMETERS HAVE BEEN MET!", "command" => ""))).")";
 
 			}
 
