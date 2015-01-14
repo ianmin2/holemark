@@ -81,6 +81,11 @@ class connection{
 		
 	}
 	
+	public function mquery( $statement, $stops=false ){
+		$query =  mysqli_multi_query($this->con,"$statement")or $this->die_on_err($stops);
+		return $query;
+	}
+	
 	public function aQuery($statement, $stops=false, $success, $failure, $scommand='', $fcommand='' ){  
 	
 		$query = $this->query($statement,$stops);

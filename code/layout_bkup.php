@@ -1,5 +1,5 @@
 <!-- Begin page heading -->
-	<h1 class="page-heading " onclick="hpl();" style=" cursor: pointer; " >HoleMark Printers <small>| Administrative panel >> <username></username> </small></h1>
+	<h1 class="page-heading ">HoleMark Printers <small>| Administrative panel >> <username></username> </small></h1>
 <!-- End page heading -->
 
 	<!-- BEGIN SiTE INFORMATIONS -->
@@ -19,7 +19,7 @@
 							</div><!-- /.the-box no-border -->
 						</div><!-- /.col-sm-3 -->
 						
-						<div class="col-sm-3" style="cursor:pointer;" onclick="getStudents();">
+						<div class="col-sm-3" style="cursor:pointer;" onclick="workshops()">
 							<div class="the-box no-border bg-primary tiles-information fly-out-l">
 								<i class="fa fa-clock-o icon-bg"></i>
 								<div class="tiles-inner text-center">
@@ -51,7 +51,7 @@
 						
 						<div class="col-sm-3" style="cursor:pointer;" onclick="">
 							<div class="the-box no-border bg-warning tiles-information fly-out-l">
-								<i class="fa fa-lock icon-bg"></i>
+								<i class="fa fa-home icon-bg"></i>
 								<div class="tiles-inner text-center">
 									<p></p>
 									<h3 class="bolded " style="text-shadow: 1px 2px teal;">ADMIN</h3> 
@@ -65,10 +65,7 @@
 						</div><!-- /.col-sm-3 -->
 					</div><!-- /.row -->
 					<!-- END SITE INFORMATIONS -->
-<!-- STUDENT MANAGEMENT PANEL -->
-	<div class="row"><div class=" col-lg-12" id="menus"></div></div>
-<!-- EO STUDENT MANAGEMENT PANEL -->
-					
+	
 <!--  MAIN STUDENT ADDITION PANEL -->	
 	<div style="font-family: courier; display: none; " class="  alert alert-success center-block alert-bold-border fade in alert-dismissable col-lg-12 "  id="newStudent"  >
 					<!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true" style="font-weight:bold; color: red;">&times;</button> -->
@@ -241,9 +238,8 @@ function hsa(){
 	//Hide Menu1
 	$(function(){
 		$('#menu1').hide('slow');
-		$('.page-heading').html('<h1 class="page-heading " onclick="hpl();" style=" cursor: pointer; " > HoleMark Printers <small>| Student Addition </small> </h1>');
+		$('.page-heading').html('HoleMark Printers <small>| Student Addition </small>');
 		$('#newStudent').css({ display: 'block'});
-		$('#menus').css({ display: 'none'});
 	})			
 	
 }
@@ -255,10 +251,8 @@ function hpl(){
 		var ud = JSON.parse( localStorage.getItem("userData") );
 		ud = ud[0];
 		$('#newStudent').hide('slow');
-		$('.page-heading').html('<h1 class="page-heading " onclick="hpl();" style=" cursor: pointer; " > HOLEMARK PRINTERS <small>| Administrative panel >> ' + ud._name + '</small> </h1>');
+		$('.page-heading').html('Holemark <small>| Administrative panel >> ' + ud._name + '</small>');
 		$('#menu1').css({ display: 'block'});
-		$('#menus').css({ display: 'none'});
-		
 	})			
 	
 }
@@ -276,7 +270,7 @@ $(function(){
 	ud = ud[0];
 	//site the username in the page header
 	$("username").html( ud._name );
-	$('title').html(' HOLEMARK | ' + ud._name  );
+	$('title').html('Holemark | ' + ud._name );
 	
 	//set the value of the school index
 	$("#_school_index").val( ud._index )
@@ -682,389 +676,3 @@ function sort(){
 	
 }
 </script>
-
-<!-- HANDLE STUDENT DATA MANIPULATION -->
-
-<script>
-$_o = {};
-dat = "";
-sSubs = "";
-subS =  { 
-		"101" : "ENGLISH",
-		"102":"KISWAHILI",
-		"121":"MATHEMATICS",
-		"231":"BIOLOGY",
-		"232":"PHYSICS",
-		"233":"CHEMISTRY",
-		"237":"GENERAL SCIENCE",
-		"311":"HISTORY & GOVERNMENT",
-		"312":"GEOGRAPHY",
-		"313":"C.R.E",
-		"314":"I.R.E",
-		"315":"H.R.E",
-		"441":"HOME SCIENCE",
-		"442":"ART & DESIGN",
-		"443":"AGRICULTURE",
-		"444":"WOODWORK",
-		"445":"METALWORK",
-		"446":"BUILDING CONSTRUCTION",
-		"447":"POWER MECHANICS",
-      	"448":"ELECTRICITY",
-      	"449":"DRAWING & DESIGN",
-      	"450":"AVIATION TECHNOLOGY",
-      	"451":"COMPUTER STUDIES",
-      	"501":"FRENCH",
-      	"502":"GERMAN",
-      	"503":"ARABIC",
-      	"504":"KENYA SIGN LANGUAGE",
-      	"511":"MUSIC",
-      	"565":"BUSINESS STUDIES",
-		
-	};
-function getStudents(){
-
-	$(function(){
-
-		$('#menu1').hide('slow');
-		$('.page-heading').html('<h1 class="page-heading " onclick="hpl();" style=" cursor: pointer; " > HoleMark Printers  <small>| Student Data Manipulation </small></h1>');
-		$('#newStudent').css({ display: 'none'});
-		$('#menus').css({ display: 'block'});
-		
-				
-		 dat = JSON.parse( localStorage.getItem('userData') );
-		$.post('proc.php', 
-				{ action: "getStudents", _school : dat[0]._index  },
-				function( resp ) {
-					
-					var studs = resp.data.message.students;
-					var colors = { "1": " bg-success ", "2": " bg-primary ", "3": " bg-warning ", "4": " bg-danger " };
-					//console.log(resp.data.message.student_data );
-	
-					localStorage.setItem("student_data", JSON.stringify( resp.data.message.student_data ) );
-					
-					
-					//Initialize the localstorage data
-					sSubs = JSON.parse( localStorage.getItem('student_data') );	
-					var $pa ="'all'";
-					
-					
-					$ins = '<div col="row">  <div class="row"><div class="col-sm-3" style="cursor:pointer;" onclick="doPromote( ' +  $pa + ');"><div class="the-box no-border bg-info tiles-information fly-out-l"><i style="color: black;" class="fa fa-arrow-up icon-bg "></i><div class="tiles-inner text-center "><p></p><h5 class="bolded" style="text-shadow: 1px 2px teal;"> PROMOTE ALL  </h5> </div><!-- /.tiles-inner --></div><!-- /.the-box no-border --></div><!-- /.col-sm-3 -->     <div class="row"><div class="col-sm-3" style="cursor:pointer;" onclick="showClasses();"><div class="the-box no-border bg-info tiles-information fly-out-l"><i style="color: black;" class="fa fa-arrow-circle-o-up icon-bg "></i><div class="tiles-inner text-center "><p></p><h5 class="bolded" style="text-shadow: 1px 2px teal;"> PROMOTE PER CLASS  </h5> </div><!-- /.tiles-inner --></div><!-- /.the-box no-border --></div><!-- /.col-sm-3 -->       ';		
-					$ins += '<div class="col-sm-2 the-box no-border">#search box for student id goes here </div>  <div class="col-sm-3" style="cursor:pointer;" onclick=""><div class="the-box no-border bg-default tiles-information "><i style="color: black;" class="fa fa-compass fa-2x icon-bg "></i> <div class="tiles-inner text-center ">  <div class="bolded col-sm-3 bg-success fly-out-l" style="text-shadow: 1px 2px teal;"> f1 </div>  <div class="bolded col-sm-3 bg-primary fly-out-l" style="text-shadow: 1px 2px teal;"> f2 </div>  <div class="bolded col-sm-3 bg-warning fly-out-l" style="text-shadow: 1px 2px teal;"> f3 </div>   <div class="bolded col-sm-3 bg-danger fly-out-l" style="text-shadow: 1px 2px teal;"> f4 </div>  </div><!-- /.tiles-inner --></div><!-- /.the-box no-border --></div><!-- /.col-sm-3 -->    </div>';
-					$ins += "<div col='row'>";
-					//build student portfolio
-					for( stud in studs ){
-	
-						//console.log(studs[stud]._subjects + " == " + d[stud].id );
-						$ins += '<div class="col-sm-3" style="cursor:pointer;" onclick="getStudent('+ stud +')"><div class="the-box no-border ' + colors[ studs[stud]._is_candidate ]  + ' tiles-information fly-out-l"><i class="fa fa-user icon-bg "></i><div class="tiles-inner text-center "><p></p><h3 class="bolded" style="text-shadow: 1px 2px teal;">'+ studs[stud]._candidate_index  +  ' </h3> '+ studs[stud]._kcpe_index  +  ' ~ ' + studs[stud]._year +  '</div><!-- /.tiles-inner --></div><!-- /.the-box no-border --></div><!-- /.col-sm-3 -->';
-						
-					}
-					$ins += '</div>';
-
-					$("#menus").html($ins);
-					
-				}
-			);
-	
-	
-	});
-	
-}
-
-function getStudent( pos ){
-
-	$(function(){
-
-		var _ = sSubs[pos];
-		var dats = "";
-
-		//iterate through the subjects while displaying those that are available
-		dats = '<center><h1>' + _._student_id +'\'s data </h1></center><div class="row">';
-		//console.log( _ )
-		for( var i = 1; i <= 12; i++ ){
-			if( _['_sub'+i] != '' ){
-				//console.log( '_sub'+i + " == " + subS[  _['_sub'+i] ] );
-				dats += '<div class="col-sm-2" style="cursor:pointer;" onclick=""><div class="the-box no-border bg-warning tiles-information fly-out"><i style="color: black;" class="fa fa-clipboard icon-bg "></i><div class="tiles-inner text-center "><p></p><h5 class="bolded" style="text-shadow: 1px 2px teal;">'+ subS[  _['_sub'+i] ] + ' </h5> </div><!-- /.tiles-inner --></div><!-- /.the-box no-border --></div><!-- /.col-sm-3 -->';
-			}
-		}
-		var $sa = "'single'";
-		dats += '</div><div class="row"><div class="col-sm-2" style="cursor:pointer;" onclick=""><div class="the-box no-border bg-success tiles-information fly-out-l"><i style="color: black;" class="fa fa-edit icon-bg "></i><div class="tiles-inner text-center "><p></p><h5 class="bolded" style="text-shadow: 1px 2px teal;"> EDIT INFO  </h5> </div><!-- /.tiles-inner --></div><!-- /.the-box no-border --></div><!-- /.col-sm-3 -->   <div class="col-sm-2" style="cursor:pointer;" onclick="sPA(' + _.id +') "><div class="the-box no-border bg-success tiles-information fly-out-l"><i style="color: black;" class="fa fa-arrow-up icon-bg "></i><div class="tiles-inner text-center "><p></p><h5 class="bolded" style="text-shadow: 1px 2px teal;"> PROMOTE STUDENT  </h5> </div><!-- /.tiles-inner --></div><!-- /.the-box no-border --></div><!-- /.col-sm-3 -->   <div class="col-sm-2" style="cursor:pointer;" onclick="sDA(' + _.id +') "><div class="the-box no-border bg-success tiles-information fly-out-l"><i  style="color: black;" class="fa fa-arrow-down icon-bg "></i><div class="tiles-inner text-center "><p></p><h5 class="bolded" style="text-shadow: 1px 2px teal;"> DEMOTE STUDENT  </h5> </div><!-- /.tiles-inner --></div><!-- /.the-box no-border --></div><!-- /.col-sm-3 -->    <div class="col-sm-2" style="cursor:pointer;" onclick="aDA(' + _.id +') "><div class="the-box no-border bg-danger tiles-information fly-out-l"><i  style="color: black;" class="fa fa-cross icon-bg "></i><div class="tiles-inner text-center "><p></p><h5 class="bolded" style="text-shadow: 1px 2px teal;"> DELETE STUDENT  </h5> </div><!-- /.tiles-inner --></div><!-- /.the-box no-border --></div><!-- /.col-sm-3 --> </div>';
-		
-		
-		$("#menus").html(dats);
-
-	});
-
-	
-	
-}
-
-function showClasses(){
-
-	var $ca = "'class'";
-	var $ira = '<div class="row center-block"> <h2 style="color: white;">STUDENT PROMOTION BY CLASS</h2> Click on the class to Promote all it\'s members </div><div class="row">     <div class="col-lg-12" style="cursor:pointer;" onclick="">  <div class="bolded col-sm-3 bg-success fly-out-l the-box" style="text-shadow: 1px 2px teal;" onclick="cPA(1)"> f1 </div>  <div class="bolded col-sm-3 bg-primary fly-out-l the-box" style="text-shadow: 1px 2px teal;" onclick="cPA(2)"> f2 </div>  <div class="bolded col-sm-3 bg-warning fly-out-l the-box" style="text-shadow: 1px 2px teal;" onclick="cPA(3)"> f3 </div>   <div class="bolded col-sm-3 bg-danger fly-out-l the-box" style="text-shadow: 1px 2px teal;" onclick="cPA(4)"> f4 </div>    </div>  <div class="row">    <div class="col-sm-3" style="cursor:pointer;" onclick="showClassesD( );"><div class="the-box no-border bg-info tiles-information fly-out-l"><i style="color: black;" class="fa fa-arrow-down icon-bg "></i><div class="tiles-inner text-center "><p></p><h5 class="bolded" style="text-shadow: 1px 2px teal;"> DEMOTE STUDENTS  </h5> </div><!-- /.tiles-inner --></div><!-- /.the-box no-border --></div><!-- /.col-sm-3 -->   </div>  ';
-
-	$('#menus').html($ira);
-	
-}
-
-function showClassesD(){
-
-	var $ca = "'class'";
-	var $ira = '<div class="row center-block"> <h2 style="color: white;">STUDENT DEMOTION BY CLASS</h2> Click on the class to Demote all it\'s members </div> <div class="row">     <div class="col-lg-12" style="cursor:pointer;" onclick="">  <div class="bolded col-sm-3 bg-success fly-out-l the-box" style="text-shadow: 1px 2px teal;" onclick="cDA(1)"> f1 </div>  <div class="bolded col-sm-3 bg-primary fly-out-l the-box" style="text-shadow: 1px 2px teal;" onclick="cDA(2)"> f2 </div>  <div class="bolded col-sm-3 bg-warning fly-out-l the-box" style="text-shadow: 1px 2px teal;" onclick="cDA(3)"> f3 </div>   <div class="bolded col-sm-3 bg-danger fly-out-l the-box" style="text-shadow: 1px 2px teal;" onclick="cDA(4)"> f4 </div>    </div>  <div class="row">    <div class="col-sm-3" style="cursor:pointer;" onclick="showClasses( );"><div class="the-box no-border bg-info tiles-information fly-out-l"><i style="color: black;" class="fa fa-arrow-up icon-bg "></i><div class="tiles-inner text-center "><p></p><h5 class="bolded" style="text-shadow: 1px 2px teal;"> PROMOTE STUDENTS  </h5> </div><!-- /.tiles-inner --></div><!-- /.the-box no-border --></div><!-- /.col-sm-3 -->   </div>  ';
-	
-	$('#menus').html($ira);
-	
-}
-
-function cPA( d ){
-
-	delete $_o.action;
-	delete $_o._type;
-	delete $_o._whom;
-
-	$_o.action	=   "doPromote";
-	$_o._type	=   "class";
-	$_o._whom	=   { school : dat[0]._index , class : d };
-	
-	doPromote($_o);
-	
-}
-
-function sPA( d ){
-
-	delete $_o.action;
-	delete $_o._type;
-	delete $_o._whom;
-
-	$_o.action	=   "doPromote";
-	$_o._type	=   "single";
-	$_o._whom	=   { school : dat[0]._index , class : d };
-	
-	doPromote($_o);
-	
-}
-
-function doPromote ( t ){
-//console.log(t);
-	//Update all school data 
-	if( t === "all" ){
-
-		var ira = confirm("DO YOU REALLY WANT TO PROMOTE ALL STUDENTS?");
-		
-		if( ira ){
-		$("#menus").html('<center> <i class="fa fa-cog fa-4x fa-spin" style="color: white;"></i> UPDATING SCHOOL DATA');
-		//console.log('updating all school records! ==> Promotion');
-		$.post( 'proc.php',
-				{ action : 'doPromote', _type : t , _whom : { school : dat[0]._index } },
-				function(resp){
-					
-					if( resp.response == "SUCCESS" ){
-						//console.log(resp.data.message);
-						alert( resp.data.message );
-						getStudents();
-					}else{
-						alert(resp.data.message);
-					}
-					
-				}
-			);
-		}
-	//Update all class data
-	}else if( t._type === "class" ) {
-
-		var ira = confirm("DO YOU REALLY WANT TO PROMOTE ALL STUDENTS IN THIS CLASS?");
-		
-		if( ira ){
-		$("#menus").html('<center> <i class="fa fa-cog fa-4x fa-spin" style="color: white;"></i> UPDATING CLASS DATA');
-		//console.log('updating all class records! ==> Promotion');
-		$.post( 'proc.php',
-				t,
-				function(resp){
-
-					if( resp.response == "SUCCESS" ){
-						//console.log(resp.data.message);
-						alert( resp.data.message );
-						getStudents();
-					}else{
-						alert(resp.data.message);
-					}
-					
-				}
-			);
-		}
-
-	}else if( t._type === "single" ){
-
-		var ira = confirm("DO YOU REALLY WANT TO PROMOTE THIS STUDENT?");
-		
-		if( ira ){
-		$("#menus").html('<center> <i class="fa fa-cog fa-4x fa-spin" style="color: white;"></i> UPDATING PERSONAL DATA');
-		//console.log('updating the personal record! ==> Promotion');
-		$.post( 'proc.php',
-				t,
-				function(resp){
-
-					if( resp.response == "SUCCESS" ){
-						//console.log(resp.data.message);
-						alert( resp.data.message );
-						getStudents();
-					}else{
-						alert(resp.data.message);
-					}
-					
-				}
-			);
-		}
-		
-	}
-	
-	
-}
-
-function cDA( d ){
-
-	delete $_o.action;
-	delete $_o._type;
-	delete $_o._whom;
-
-	$_o.action	=   "doDemote";
-	$_o._type	=   "class";
-	$_o._whom	=   { school : dat[0]._index , class : d };
-	
-	doDemote($_o);
-	
-}
-
-function sDA( d ){
-
-	delete $_o.action;
-	delete $_o._type;
-	delete $_o._whom;
-
-	$_o.action	=   "doDemote";
-	$_o._type	=   "single";
-	$_o._whom	=   { school : dat[0]._index , class : d };
-
-	//console.log($_o)
-	doDemote($_o);
-	
-}
-
-function aDA( d ){
-
-	delete $_o.action;
-	delete $_o._type;
-	delete $_o._whom;
-
-	$_o.action	=   "doDemote";
-	$_o._type	=   "";
-	$_o._whom	=   { school : dat[0]._index , class : d };
-
-	//console.log($_o)
-	doDemote($_o);
-	
-}
-
-function doDemote ( t ){
-	//console.log(t);
-		//Update all school data 
-		if( t === "all" ){
-
-			var ira = confirm("DO YOU REALLY WANT TO DEMOTE ALL STUDENTS?");
-			
-			if( ira ){
-			$("#menus").html(' <center> <i class="fa fa-cog fa-4x fa-spin" style="color: white;"></i> UPDATING SCHOOL DATA');
-			//console.log('updating all school records! ==> Demotion');
-			$.post( 'proc.php',
-					{ action : 'doDemote', _type : t , _whom : { school : dat[0]._index } },
-					function(resp){
-						
-						if( resp.response == "SUCCESS" ){
-							//console.log(resp.data.message);
-							alert( resp.data.message );
-							getStudents();
-						}else{
-							alert(resp.data.message);
-						}
-						
-					}
-				);
-			}
-		//Update all class data
-		}else if( t._type === "class" ) {
-			
-			var ira = confirm("DO YOU REALLY WANT TO DEMOTE ALL STUDENTS IN THIS CLASS?");
-			
-			if( ira ){
-			$("#menus").html('<center> <i class="fa fa-cog fa-4x fa-spin" style="color: white;"></i> UPDATING CLASS DATA');
-			//console.log('updating all class records! ==> Demotion');
-			$.post( 'proc.php',
-					t,
-					function(resp){
-
-						if( resp.response == "SUCCESS" ){
-							//console.log(resp.data.message);
-							alert( resp.data.message );
-							getStudents();
-						}else{
-							alert(resp.data.message);
-						}
-						
-					}
-				);
-			}
-
-		}else if( t._type === "single" ){
-
-			var ira = confirm("DO YOU REALLY WANT TO DEMOTE THIS STUDENT?");
-			
-			if( ira ){
-			$("#menus").html('<center> <i class="fa fa-cog fa-4x fa-spin" style="color: white;"></i> UPDATING PERSONAL DATA');
-			console.log('updating the personal record! ==> Demotion');
-			$.post( 'proc.php',
-					t,
-					function(resp){
-
-						if( resp.response == "SUCCESS" ){
-							//console.log(resp.data.message);
-							alert( resp.data.message );
-							getStudents();
-						}else{
-							alert(resp.data.message);
-						}
-						
-					}
-				);
-			}
-			
-		}else{
-
-			var ira = confirm("DO YOU REALLY WANT TO PURGE ALL RECORDS BELONGING TO THIS STUDENT?");
-			
-			if( ira ){
-			$("#menus").html('<center> <i class="fa fa-cog fa-4x fa-spin" style="color: white;"></i> UPDATING PERSONAL DATA');
-			console.log('updating the personal record! ==> Demotion');
-			$.post( 'proc.php',
-					t,
-					function(resp){
-
-						if( resp.response == "SUCCESS" ){
-							//console.log(resp.data.message);
-							alert( resp.data.message );
-							getStudents();
-						}else{
-							alert(resp.data.message);
-						}
-						
-					}
-				);
-			}
-
-		}
-		
-		
-	}
-
-</script>
-
-

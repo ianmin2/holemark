@@ -125,13 +125,13 @@ $this->req['_sub1'] = "101"; 			$this->req['_sub2'] = "102"; 			$this->req['_sub
 			
 			
 			//pack the subject data into a query string for insertion into the 'student_data' table
-			$query = "INSERT INTO student_data ( _sub1 , _sub2 , _sub3 , _sub4 , _sub5 , _sub6 , _sub7 , _sub8 , _sub9 , _sub10 , _sub11 , _sub12 , _school_id , _student_id  ) VALUES ( " ;
+			$query = "INSERT INTO student_data ( _sub1 , _sub2 , _sub3 , _sub4 , _sub5 , _sub6 , _sub7 , _sub8 , _sub9 , _sub10 , _sub11 , _sub12 , _school_id , _student_id , _student_class, actif ) VALUES ( " ;
 			foreach ($subjects as $k => $v ){
 				$query .= "'".@$this->sanitize($this->req[$v])."',";
 			}
-			$query .= "'".@$this->sanitize($this->req['_school_index'])."','".@$this->sanitize($this->req['_candidate_index'])."' )";
+			$query .= "'".@$this->sanitize($this->req['_school_index'])."','".@$this->sanitize($this->req['_candidate_index'])."', '".@$this->sanitize($this->req['_is_candidate'])."', '1' )";
 			//Process the database insert  
-			$query = $this->connection->query($query);
+			$query = $this->connection->query($query, false);
 									
 			/* Continue with the database insert if all the required fields are filled */
 			if($query){
@@ -147,7 +147,7 @@ $this->req['_sub1'] = "101"; 			$this->req['_sub2'] = "102"; 			$this->req['_sub
 				
 				//Inserting the student data
 				//Generate an sql query
-				$query = "INSERT INTO students ( _school_index, _candidate_index, _kcpe_index, _year, _subjects, _is_candidate ) VALUES (";
+				$query = "INSERT INTO students ( id, _school_index, _candidate_index, _kcpe_index, _year, _subjects, _is_candidate ) VALUES ( '".@$id."', ";
 				foreach($fields as $k => $v){
 					if($v != '_subjects'):
 						$query .= "'".@$this->sanitize($this->req[$v])."',";
@@ -159,7 +159,7 @@ $this->req['_sub1'] = "101"; 			$this->req['_sub2'] = "102"; 			$this->req['_sub
 				$query .= " )";
 			
 				//Insert a student record referencing the student subject data
-				$query = $this->connection->query($query); 
+				$query = $this->connection->query($query, false); 
 				
 				if($query):
 					return json_encode( array("response"=>"SUCCESS", "data"=>array("message"=>"Success, \n\r<br> Student successfully added ", "command"=>"" ) ) );
@@ -169,7 +169,7 @@ $this->req['_sub1'] = "101"; 			$this->req['_sub2'] = "102"; 			$this->req['_sub
 				endif;
 				
 			}else{
-				return json_encode( array("response"=>"ERROR", "data"=>array("message"=>"Oops, \n\r<br> Failed to add student subject data \n\r<br> That student's records aready exist! ", "command"=>"" ) ) );
+				return json_encode( array("response"=>"ERROR", "data"=>array("message"=>"Oops, \n\r<br> Failed to add subject data for the given student \n\r<br> That student's records aready exist! ", "command"=>"" ) ) );
 			}
 			
 		//if the request variable is empty	
@@ -254,25 +254,28 @@ $this->req['_sub1'] = "101"; 			$this->req['_sub2'] = "102"; 			$this->req['_sub
 
 	
 /* Display student data */
-	public function getStudents( $school_index='', $candidate_index=''){
+	public function getStudents(){
+		
+		$school_index = @$this->req['_school'];			
+		$candidate_index = @$this->req['_candidate'];
 		
 		//Get students from a particular school
 		if($school_index != "" && $candidate_index == ""){			
-			$res["students"] 	=  $this->connection->printQueryresults("SELECT * FROM students WHERE _school_index='".$school_index."' ");
-			$res["student_data"]=  $this->connection->printQueryResults(" SELECT * FROM student_data WHERE _school_id='".$school_index."' ");
-			return $res;
+			$res["students"] 	=  $this->connection->printQueryresults("SELECT * FROM students WHERE _school_index='".$school_index."' ORDER BY _is_candidate ");
+			$res["student_data"]=  $this->connection->printQueryResults(" SELECT * FROM student_data WHERE _school_id='".$school_index."' ORDER BY _student_class ");
+			return json_encode( array("response"=>"SUCCESS", "data"=>array("message"=> $res, "command"=>"" ) ) );
 			
 		//Get a specific student's data
 		}elseif ($school_index != "" && $candidate_index != ""){
 			$res["students"]	=	$this->connection->printQueryresults("SELECT * FROM students WHERE _school_index='".$school_index."' AND _candidate_index='".$candidate_index."' LIMIT 1 ");
 			$res["student_data"]= 	$this->connection->printQueryResults(" SELECT * FROM student_data WHERE _school_id='".$school_index."' AND _student_id='".$candidate_index."' LIMIT 1 ");
-			return $res;
+			return json_encode( array("response"=>"SUCCESS", "data"=>array("message"=> $res, "command"=>"" ) ) );
 			
 		//Get a list of all students and there data
-		}else{
+		}else if($school_index == "all"){
 			$res["students"]	=	$this->getTable("students");
 			$res["student_data"]= 	$this->getTable("student_data");
-			return $res;
+			return json_encode( array("response"=>"SUCCESS", "data"=>array("message"=> $res, "command"=>"" ) ) );
 			
 		}
 		
@@ -294,7 +297,7 @@ $this->req['_sub1'] = "101"; 			$this->req['_sub2'] = "102"; 			$this->req['_sub
 	
 /* Display a list of all field from the given table */
 	public function getTable($tablename){
-		return $this->connection->printQueryResults("SELECT * FROM  $tablename ");
+		return  array( "response" => "SUCCESS", "data" => array( "message" => $this->connection->printQueryResults("SELECT * FROM  $tablename "), "command" => "" ) );
 	}
 /* End of table list display*/
 
@@ -437,6 +440,104 @@ $this->req['_sub1'] = "101"; 			$this->req['_sub2'] = "102"; 			$this->req['_sub
 	}
 /* EO USER DATA FETCH */
 	
+
+/* STUDENT PROMOTION  */
+	function doPromote(){
+		
+		$type = @$this->req['_type'];
+		$whom = @$this->req['_whom'];
+		
+		if($type == "all"){
+			
+			$query = "UPDATE students SET _is_candidate= ( _is_candidate + 1 ) WHERE _school_index = '".@$whom['school']."' ; UPDATE student_data SET _student_class = ( _student_class + 1 ) WHERE _school_id = '".@$whom['school']."'; DELETE FROM students WHERE _is_candidate > 5; DELETE FROM student_data WHERE _student_class > 5 ";
+			$query = $this->connection->mquery($query, true );	
+			if($query){
+				return json_encode( array( "response" => "SUCCESS", "data" => array( "message" => "SUCCESSFULLY UPDATED ALL STUDENT RECORDS!", "command" => "") ) );
+			}else{
+				return json_encode( array( "response" => "ERROR", "data" => array( "message" => "FAILED TO UPDATE ALL STUDENT RECORDS!", "command" => "") ) );
+			}	
+				
+		}else if( $type == "class" ){
+			
+			$query = "UPDATE students SET _is_candidate= ( _is_candidate + 1 ) WHERE _school_index = '".@$whom['school']."' AND _is_candidate = '".@$whom['class']."' ; UPDATE student_data SET _student_class = ( _student_class + 1 ) WHERE _school_id = '".@$whom['school']."' AND _student_class = '".@$whom['class']."'; DELETE FROM students WHERE _is_candidate > 5; DELETE FROM student_data WHERE _student_class > 5 ";
+			$query = $this->connection->mquery($query, true );
+			if($query){
+				return json_encode( array( "response" => "SUCCESS", "data" => array( "message" => "SUCCESSFULLY UPDATED ALL FORM {$whom['class']} CLASS RECORDS! ", "command" => "") ) );
+			}else{
+				return json_encode( array( "response" => "ERROR", "data" => array( "message" => "FAILED TO UPDATE ALL FORM {$whom['class']} CLASS RECORDS!", "command" => "") ) );
+			}
+			
+		}else if($type == "single" ){
+			
+			$query = "UPDATE students SET _is_candidate= ( _is_candidate + 1 ) WHERE _school_index = '".@$whom['school']."' AND id = '".@$whom['class']."' ; UPDATE student_data SET _student_class = ( _student_class + 1 ) WHERE _school_id = '".@$whom['school']."' AND id = '".@$whom['class']."'; DELETE FROM students WHERE _is_candidate > 5; DELETE FROM student_data WHERE _student_class > 5 ";
+			$query = $this->connection->mquery($query, true );
+			if($query){
+				return json_encode( array( "response" => "SUCCESS", "data" => array( "message" => "SUCCESSFULLY UPDATED THE STUDENT RECORDS! ", "command" => "") ) );
+			}else{
+				return json_encode( array( "response" => "ERROR", "data" => array( "message" => "FAILED TO UPDATE THE STUDENT RECORDS!", "command" => "") ) );
+			}
+			
+		}else{
+			return json_encode( array( "response" => "ERROR", "data" => array( "message" => "FAILED TO CAPTURE PROMOTION PROCESS CRITERIA!", "command" => "") ) );
+		}
+		
+		
+	}
+	
+/* EO STUDENT PROMOTION */
+	
+/* STUDENT DEMOTION  */
+function doDemote(){
+
+$type = @$this->req['_type'];
+		$whom = @$this->req['_whom'];
+		
+		if($type == "all"){
+			
+			$query = "UPDATE students SET _is_candidate= ( _is_candidate - 1 ) WHERE _school_index = '".@$whom['school']."' ; UPDATE student_data SET _student_class = ( _student_class - 1 ) WHERE _school_id = '".@$whom['school']."' ";
+			$query = $this->connection->mquery($query, true );	
+			if($query){
+				return json_encode( array( "response" => "SUCCESS", "data" => array( "message" => "SUCCESSFULLY UPDATED ALL STUDENT RECORDS!", "command" => "") ) );
+			}else{
+				return json_encode( array( "response" => "ERROR", "data" => array( "message" => "FAILED TO UPDATE ALL STUDENT RECORDS!", "command" => "") ) );
+			}	
+				
+		}else if( $type == "class" ){
+			
+			$query = "UPDATE students SET _is_candidate= ( _is_candidate - 1 ) WHERE _school_index = '".@$whom['school']."' AND _is_candidate = '".@$whom['class']."' ; UPDATE student_data SET _student_class = ( _student_class - 1 ) WHERE _school_id = '".@$whom['school']."' AND _student_class = '".@$whom['class']."' ";
+			$query = $this->connection->mquery($query, true );
+			if($query){
+				return json_encode( array( "response" => "SUCCESS", "data" => array( "message" => "SUCCESSFULLY UPDATED ALL FORM {$whom['class']} CLASS RECORDS! ", "command" => "") ) );
+			}else{
+				return json_encode( array( "response" => "ERROR", "data" => array( "message" => "FAILED TO UPDATE ALL FORM {$whom['class']} CLASS RECORDS!", "command" => "") ) );
+			}
+			
+		}else if($type == "single" ){
+			
+			$query = "UPDATE students SET _is_candidate= ( _is_candidate - 1 ) WHERE _school_index = '".@$whom['school']."' AND id = '".@$whom['class']."' ; UPDATE student_data SET _student_class = ( _student_class - 1 ) WHERE _school_id = '".@$whom['school']."' AND id = '".@$whom['class']."'";
+			$query = $this->connection->mquery($query, true );
+			if($query){
+				return json_encode( array( "response" => "SUCCESS", "data" => array( "message" => "SUCCESSFULLY UPDATED THE STUDENT RECORDS! ", "command" => "") ) );
+			}else{
+				return json_encode( array( "response" => "ERROR", "data" => array( "message" => "FAILED TO UPDATE THE STUDENT RECORDS!", "command" => "") ) );
+			}
+			
+		}else{
+			
+			$query = "DELETE FROM students WHERE _school_index = '".@$whom['school']."' AND id = '".@$whom['class']."' ; DELETE FROM student_data WHERE _school_id = '".@$whom['school']."' AND id = '".@$whom['class']."'";
+			$query = $this->connection->mquery($query, true );
+			if($query){
+				return json_encode( array( "response" => "SUCCESS", "data" => array( "message" => "SUCCESSFULLY PURGED THE STUDENT RECORDS! ", "command" => "") ) );
+			}else{
+				return json_encode( array( "response" => "ERROR", "data" => array( "message" => "FAILED TO PURGE THE STUDENT RECORDS!", "command" => "") ) );
+			}
+		}
+
+
+}
+
+/* EO STUDENT DEMOTION */
+
 	
 /*  */
 /*  */

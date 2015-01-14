@@ -17,7 +17,12 @@
 		<link href="assets/css/style.css" rel="stylesheet">
 		<link href="assets/css/custom.css" rel="stylesheet">
 		<link href="assets/css/style-responsive.css" rel="stylesheet">
- 
+ 		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/apps.js"></script>
+		<script>
+			//Check if the user is loged in
+			loginAuth();
+		</script>
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
 		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -163,7 +168,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3735bf', end
 						
 						<div class="col-sm-3" style="cursor:pointer;" onclick="sma()">
 							<div class="the-box no-border bg-warning tiles-information fly-out-l">
-								<i class="fa fa-home icon-bg"></i>
+								<i class="fa fa-lock icon-bg"></i>
 								<div class="tiles-inner text-center">
 									<p></p>
 									<h3 class="bolded " style="text-shadow: 1px 2px teal;">ADMIN</h3> 
@@ -438,19 +443,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3735bf', end
 		Placed at the end of the document so the pages load faster
 		===========================================================
 		-->
-		<!-- MAIN JAVASRCIPT (REQUIRED ALL PAGE)-->
-		<script src="assets/js/jquery.min.js"></script>
+		<!-- MAIN JAVASRCIPT (REQUIRED ALL PAGE)-->		
 		<script src="assets/js/bootstrap.min.js"></script>
 		
- 
-		<!-- MAIN APPS JS -->
-		<script src="assets/js/apps.js"></script>
+		
 		<script>
-		
-		//Check if the user is loged in
-		loginAuth();
-		
-		
+			
 		//Handle login Requests
 		function sma(){
 			

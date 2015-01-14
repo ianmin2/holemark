@@ -35,7 +35,7 @@ $data = @$_REQUEST;
 				break;
 				
 			case 'getStudents':
-				;
+				echo  $hsm->getStudents();
 				break;
 				
 			case 'getKcpe':
@@ -69,6 +69,14 @@ $data = @$_REQUEST;
 
 			case 'getData':
 				echo $hsm->getData();
+				break;
+				
+			case 'doPromote':
+				echo $hsm->doPromote();
+				break;
+				
+			case 'doDemote':
+				echo $hsm->doDemote();
 				break;
 			
 			default:

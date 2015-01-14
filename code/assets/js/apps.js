@@ -9,6 +9,8 @@ $__url = "http://127.0.0.1/holemark/code/";
 //$__layouts = 'layouts/smaLayout.exe';
 $__layouts = 'layout.php';
 $__d = new Date();
+
+
 gSubs = { 
 		
 		g1 : [
@@ -31,7 +33,7 @@ gSubs = {
 		      	{"id":"11","_code":"314","_title":"I.R.E","_papers":""},
 		      	{"id":"12","_code":"315","_title":"H.R.E","_papers":""}
 	      	],
-
+	      		      	
 		g4 : [
 		      	{"id":"13","_code":"441","_title":"HOME SCIENCE","_papers":""},
 		      	{"id":"14","_code":"442","_title":"ART & DESIGN","_papers":""},
@@ -163,6 +165,7 @@ function doLogout(){
 			{ action: 'doLogout' },
 			function( data ){
 				if(data == 1 ){
+					localStorage.clear();
 					location.reload();
 				}else{
 					doLogout();
