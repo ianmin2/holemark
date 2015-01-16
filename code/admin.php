@@ -231,45 +231,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3735bf', end
 				
 			});
 			
+        
+    });
 
-
-	
-			
-			
-			
-//LOAD THE SIGNUP PREQUISITES	
-	$.post('proc.php', { action:'asmPrerequisites' } , 
-			function( d ){
-				 
-				$(function(){
-						cats = ( d.data.message.categories );
-						stats = ( d.data.message.status );
-						
-						//console.log( JSON.stringify(cats) + '\n\n' + JSON.stringify(stats) )
-						
-						//Display all the categories
-						$c = '<option value="" selected> PICK A CATEGORY </option>';
-						for( cat in cats ){
-							$c += ' <option value="' + cats[cat].id + '" >' + cats[cat]._title + '</option>';
-						}
-						$('#_category').html($c);
-						
-						//Display all the statuses
-						$s = '<option value="" selected> Accomodation STATUS </option>';
-						for( stat in stats ){
-							$s += ' <option value="' + stats[stat]._abbr + '" >' + stats[stat]._title + '</option>';
-						}
-						$('#_status').html($s);
-						
-						//console.log( $c )
-						//console.log( $s )
-				});
-		
-			}				
-	);
-			
-		});
-		
 		</script>
 		
 		

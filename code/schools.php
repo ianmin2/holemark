@@ -303,9 +303,26 @@ $this->req['_sub1'] = "101"; 			$this->req['_sub2'] = "102"; 			$this->req['_sub
 
 
 /* Authenticate School Data Access */
-	public function doAuth(){		
+	public function doAuth(){	
+        
+        
+        
 				
-		if( @$this->req['_user_'] != "" && $this->req['_key_'] != "" ){
+		if( @$this->req['_user_'] != "" && $this->req['_key_'] != "" ){ 
+            
+            if( @$this->req['_admin_']  == true ){
+                    
+                if( @$this->req['_user_'] == "demo" && @$this->req['_key_'] == "demo" ){
+                    
+                    return json_encode( array("response"=>"SUCCESS", "data"=>array("message"=>"Success! <br> Loging you in!", "command"=>"" ) ) ); 
+                    
+                }else{
+                    
+                    return json_encode( array("response"=>"ERROR", "data"=>array("message"=>"Oops! <br> Please make sure you are using the correct credentials!", "command"=>"" ) ) );
+                    
+                }
+                
+            }
 		
 			$isUser = $this->connection->num_rows("SELECT * FROM users WHERE ( _key_ = '".$this->sanitize( $this->crypto->makePass($this->req['_key_']) )."' AND   _user_ = '".$this->sanitize( $this->req['_user_'] )."' ) OR (  _index_ = '".$this->sanitize( $this->req['_user_'] )."'  AND _key_ = '".$this->sanitize( $this->crypto->makePass($this->req['_key_']) )."' ) ");
 						
