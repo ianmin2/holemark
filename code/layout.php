@@ -1067,7 +1067,7 @@ function doDemote ( t ){
 		
 		
 	}
-
+/* ianmin2 */
 </script>
 
 

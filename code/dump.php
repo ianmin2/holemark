@@ -119,5 +119,5 @@ $y = json_encode( $connection->printQueryResults("SELECT * FROM subjects") );
 		console.log( Object.keys($__obj).length )
 	}
 
-
+/* ianmin2 */	
 </script>

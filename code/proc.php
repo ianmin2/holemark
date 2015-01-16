@@ -83,8 +83,5 @@ $data = @$_REQUEST;
 				echo json_encode( array("response"=>"ERROR", "data"=>array("message"=>"FAILED TO AUTHENTICATE THE APPLICATION REQUEST", "command"=>"" ) ) );;
 			break;
 		}
-	
-	
-
-	
-	
+/* ianmin2 */
+?>	

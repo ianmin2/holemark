@@ -95,6 +95,5 @@ class exports{
 $i = new exports();
 $i->getInfo("student");
 
-
-
-
+/* ianmin2 */	
+?>

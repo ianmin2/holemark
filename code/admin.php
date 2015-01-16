@@ -234,7 +234,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3735bf', end
         
     });
 
-		</script>
+/* ianmin2 */	
+</script>
 		
 		
 	</body>
