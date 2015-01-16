@@ -318,7 +318,7 @@ $this->req['_sub1'] = "101"; 			$this->req['_sub2'] = "102"; 			$this->req['_sub
                     
                 }else{
                     
-                    return json_encode( array("response"=>"ERROR", "data"=>array("message"=>"Oops! <br> Please make sure you are using the correct credentials!", "command"=>"" ) ) );
+                    return json_encode( array("response"=>"ERROR", "data"=>array("message"=>"Oops! <br> Please make sure you are using the correct credentials!  ", "command"=>"" ) ) );
                     
                 }
                 
